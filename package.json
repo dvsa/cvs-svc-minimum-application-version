@@ -12,7 +12,10 @@
     "watch:dev": "NODE_ENV=development webpack-cli --config webpack/webpack.development.watch.js",
     "build:prod": "webpack-cli --config webpack/webpack.production.js",
     "start:dev": "sam local start-api",
-    "invoke": "sam local invoke"
+    "invoke": "sam local invoke",
+    "tools-setup": "echo 'move on'",
+    "test-i": "echo 'no integration tests'",
+    "package": "npm run build:prod"
   },
   "contributors": [
     {
