@@ -6,8 +6,9 @@ const branchName = require('current-git-branch');
 
 const LAMBDA_NAME = 'GetLambdaFunction';
 const OUTPUT_FOLDER = './dist'
-const REPO_NAME = 'dvsa-lambda-starter';
-const BRANCH_NAME = branchName().replace(/\//g,"-");
+const REPO_NAME = 'cvs-svc-minimum-app-version';
+const BRANCH_NAME = branchName().replace(/\//g, "-");
+const COMMIT_HASH = process.env.ZIP_NAME ? process.env.ZIP_NAME : 'local';
 
 class BundlePlugin {
   constructor(params) {
