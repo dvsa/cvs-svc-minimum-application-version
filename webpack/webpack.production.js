@@ -65,7 +65,7 @@ module.exports = env => {
           {
             inputPath: `.aws-sam/build/${LAMBDA_NAME}`,
             outputPath: `${OUTPUT_FOLDER}`,
-            outputName: `${commit}-${LAMBDA_NAME}`,
+            outputName: `${commit}`,
           }
         ],
       }),
