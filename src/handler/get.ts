@@ -3,6 +3,12 @@ import type { APIGatewayProxyResult } from 'aws-lambda';
 import 'dotenv/config';
 import logger from '../util/logger';
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+  'Access-Control-Allow-Methods': 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT',
+};
+
 // eslint-disable-next-line @typescript-eslint/require-await
 export const handler = async (): Promise<APIGatewayProxyResult> => {
   try {
@@ -23,12 +29,14 @@ export const handler = async (): Promise<APIGatewayProxyResult> => {
     return {
       statusCode: 200,
       body: JSON.stringify(minVersion),
+      headers,
     };
   } catch (error) {
     logger.error(error);
     return {
       statusCode: 500,
       body: JSON.stringify('Error fetching min version'),
+      headers,
     };
   }
 };
