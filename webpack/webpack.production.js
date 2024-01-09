@@ -6,7 +6,7 @@ const branchName = require('current-git-branch');
 
 const LAMBDA_NAME = 'GetLambdaFunction';
 const OUTPUT_FOLDER = './'
-const REPO_NAME = 'cvs-svc-minimum-app-version';
+const REPO_NAME = 'cvs-svc-minimum-application-version';
 const BRANCH_NAME = branchName().replace(/\//g, "-");
 
 class BundlePlugin {
