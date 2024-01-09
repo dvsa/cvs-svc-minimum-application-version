@@ -8,6 +8,7 @@ const LAMBDA_NAME = 'GetLambdaFunction';
 const OUTPUT_FOLDER = './'
 const REPO_NAME = 'cvs-svc-minimum-application-version';
 const BRANCH_NAME = branchName().replace(/\//g, "-");
+const COMMIT_HASH = process.env.ZIP_NAME ? process.env.ZIP_NAME : 'local';
 
 class BundlePlugin {
   constructor(params) {
@@ -66,7 +67,7 @@ module.exports = env => {
           {
             inputPath: `.aws-sam/build/${LAMBDA_NAME}`,
             outputPath: `${OUTPUT_FOLDER}`,
-            outputName: `${commit}`,
+            outputName: `${COMMIT_HASH}`,
           }
         ],
       }),
