@@ -11,13 +11,7 @@ jest.mock('@aws-sdk/client-ssm', () => ({
   GetParameterCommand: mockGetParameterCommand,
 }));
 
-import { handler } from '../../src/handler/get';
-
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-  'Access-Control-Allow-Methods': 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT',
-};
+import { handler, headers } from '../../src/handler/get';
 
 describe('get endpoint', () => {
   it('should return for non-local endpoint with mocked functions', async () => {

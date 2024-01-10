@@ -3,10 +3,10 @@ import type { APIGatewayProxyResult } from 'aws-lambda';
 import 'dotenv/config';
 import logger from '../util/logger';
 
-const headers = {
+export const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-  'Access-Control-Allow-Methods': 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT',
+  'Access-Control-Allow-Methods': 'GET,OPTIONS',
 };
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
