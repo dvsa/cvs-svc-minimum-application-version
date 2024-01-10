@@ -19,8 +19,9 @@ export const handler = async (): Promise<APIGatewayProxyResult> => {
     if (process.env.AWS_SAM_LOCAL) {
       minVersion = '1.0';
     } else {
+      const paramName = `${process.env.ENVIRONMENT ?? 'develop'}_vta_minimum_app_version`;
       const client = new SSMClient();
-      const command = new GetParameterCommand({ Name: 'fill me in', WithDecryption: false });
+      const command = new GetParameterCommand({ Name: paramName, WithDecryption: false });
       const response = await client.send(command);
       logger.info('response from ssm');
       minVersion = response.Parameter?.Value;
