@@ -16,8 +16,6 @@ export const handler = async (): Promise<APIGatewayProxyResult> => {
 
     // cannot call ssm locally so this is a workaround.
     if (process.env.AWS_SAM_LOCAL) {
-      const paramName = `${process.env.ENVIRONMENT ?? 'develop'}_vta_minimum_app_version`;
-      console.log(paramName);
       minVersion = '1.0';
     } else {
       const paramName = `${process.env.ENVIRONMENT ?? 'develop'}_vta_minimum_app_version`;
