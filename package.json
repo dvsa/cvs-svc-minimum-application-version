@@ -8,11 +8,15 @@
     "lint:ci": "eslint '*/**/*.ts'",
     "test": "jest --coverage",
     "test:ci": "jest --ci",
+    "build": "npm run build:prod",
     "build:dev": "NODE_ENV=development webpack-cli --config webpack/webpack.development.js",
     "watch:dev": "NODE_ENV=development webpack-cli --config webpack/webpack.development.watch.js",
     "build:prod": "webpack-cli --config webpack/webpack.production.js",
     "start:dev": "sam local start-api",
-    "invoke": "sam local invoke"
+    "invoke": "sam local invoke",
+    "tools-setup": "echo 'move on'",
+    "test-i": "echo 'no integration tests'",
+    "package": "npm run build:prod"
   },
   "contributors": [
     {
@@ -22,7 +26,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.1354.0"
+    "@aws-sdk/client-ssm": "^3.478.0"
   },
   "devDependencies": {
     "@dvsa/eslint-config-ts": "^3.0.0",

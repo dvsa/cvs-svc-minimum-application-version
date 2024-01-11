@@ -5,9 +5,10 @@ const archiver = require('archiver');
 const branchName = require('current-git-branch');
 
 const LAMBDA_NAME = 'GetLambdaFunction';
-const OUTPUT_FOLDER = './dist'
-const REPO_NAME = 'dvsa-lambda-starter';
-const BRANCH_NAME = branchName().replace(/\//g,"-");
+const OUTPUT_FOLDER = './'
+const REPO_NAME = 'cvs-svc-minimum-application-version';
+const BRANCH_NAME = branchName().replace(/\//g, "-");
+const COMMIT_HASH = process.env.ZIP_NAME ? process.env.ZIP_NAME : 'local';
 
 class BundlePlugin {
   constructor(params) {
@@ -65,7 +66,7 @@ module.exports = env => {
           {
             inputPath: `.aws-sam/build/${LAMBDA_NAME}`,
             outputPath: `${OUTPUT_FOLDER}`,
-            outputName: `${REPO_NAME}-${BRANCH_NAME}-${commit}`,
+            outputName: `${COMMIT_HASH}`,
           }
         ],
       }),

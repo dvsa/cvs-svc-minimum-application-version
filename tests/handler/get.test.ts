@@ -1,35 +1,30 @@
-import type {
-  APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayEventRequestContext,
-} from 'aws-lambda';
-import { v4 } from 'uuid';
-import { handler } from '../../src/handler/get';
+/* eslint-disable import/first */
+const mockSend = jest.fn();
+const mockGetParameterCommand = jest.fn();
 
-jest.mock('../../src/util/logger.ts');
+const mockSsmSend = jest.fn(() => ({
+  send: mockSend,
+}));
 
-describe('Test Get Lambda Function', () => {
-  test('should return 200 with the query parameters', async () => {
-    const queryStringParameters: Record<string, string> = { message: 'Hello world!' };
-    const requestContext: APIGatewayEventRequestContext = <APIGatewayEventRequestContext> { requestId: v4() };
-    const headers: Record<string, string> = {};
-    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {
-      queryStringParameters,
-      requestContext,
-      headers,
-    };
+jest.mock('@aws-sdk/client-ssm', () => ({
+  SSMClient: mockSsmSend,
+  GetParameterCommand: mockGetParameterCommand,
+}));
 
-    const res: APIGatewayProxyResult = await handler(eventMock);
+import { handler, headers } from '../../src/handler/get';
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual(JSON.stringify({ queryParams: queryStringParameters }));
+describe('get endpoint', () => {
+  it('should return for non-local endpoint with mocked functions', async () => {
+    mockSend.mockImplementation(() => Promise.resolve({ Parameter: { Value: '1.0' } }));
+    const result = await handler();
+    // eslint-disable-next-line no-useless-escape
+    expect(result).toEqual({ statusCode: 200, body: '\"1.0\"', headers });
   });
 
-  test('should return 400 if no query string parameters are provided', async () => {
-    const eventMock: APIGatewayProxyEvent = <APIGatewayProxyEvent> {};
-    const result = await handler(eventMock);
-
-    expect(result.statusCode).toBe(400);
-    expect(result.body).toStrictEqual(JSON.stringify({
-      message: 'Missing query string parameters',
-    }));
+  it('should return for local endpoint', async () => {
+    process.env.AWS_SAM_LOCAL = 'true';
+    const result = await handler();
+    // eslint-disable-next-line no-useless-escape
+    expect(result).toEqual({ statusCode: 200, body: '\"1.0\"', headers });
   });
 });
