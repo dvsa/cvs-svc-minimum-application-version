@@ -58,7 +58,6 @@ class BundlePlugin {
 
 module.exports = env => {
   let commit = env ? env.commit ? env.commit : 'local' : 'local' ;
-  console.log(commit)
   return merge(common, {
     mode: 'production',
     plugins: [
