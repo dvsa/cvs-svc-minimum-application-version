@@ -16,7 +16,8 @@
     "invoke": "sam local invoke",
     "tools-setup": "echo 'move on'",
     "test-i": "echo 'no integration tests'",
-    "package": "npm run build:prod"
+    "package": "npm run build:prod",
+    "sonar-scanner": "sonar-scanner"
   },
   "contributors": [
     {
