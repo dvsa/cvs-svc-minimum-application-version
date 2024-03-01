@@ -11,7 +11,8 @@ jest.mock('@aws-sdk/client-ssm', () => ({
   GetParameterCommand: mockGetParameterCommand,
 }));
 
-import { handler, headers } from '../../src/handler/get';
+import { handler } from '../../src/minimum-application-version/get';
+import { headers } from '../../src/util/headers';
 
 describe('get endpoint', () => {
   it('should return for non-local endpoint with mocked functions', async () => {
