@@ -27,11 +27,11 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@aws-sdk/client-ssm": "^3.478.0"
   },
   "devDependencies": {
     "@aws-lambda-powertools/parameters": "^1.18.1",
     "@aws-sdk/client-appconfigdata": "^3.515.0",
+    "@aws-sdk/client-ssm": "^3.478.0",
     "@dvsa/eslint-config-ts": "^3.0.0",
     "@types/aws-lambda": "^8.10.114",
     "@types/jest": "^28.1.8",
