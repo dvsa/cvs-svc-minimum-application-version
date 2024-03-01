@@ -15,7 +15,7 @@ Resources:
               Path: /minimum-version
               Method: get
 
-    FeatureFlagsLambdaVersion:
+    FeatureFlagsLambdaFunction:
       Type: 'AWS::Serverless::Function'
       Properties:
         CodeUri: src/feature-flags/
