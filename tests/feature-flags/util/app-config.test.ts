@@ -1,4 +1,3 @@
-import { Client, Clients } from '../../../src/feature-flags/util/app-config';
 import { clearCaches } from '@aws-lambda-powertools/parameters/base';
 import { Uint8ArrayBlobAdapter } from '@smithy/util-stream';
 
@@ -10,6 +9,7 @@ import {
 } from '@aws-sdk/client-appconfigdata';
 
 import { mockClient } from 'aws-sdk-client-mock';
+import { Client, Clients } from '../../../src/feature-flags/util/app-config';
 import 'aws-sdk-client-mock-jest';
 
 // This fixture is testing the underlying cache from AWS.
@@ -20,18 +20,18 @@ describe('app config caching', () => {
   type CvsFeatureFlags = {
     firstFlag: Flag,
     secondFlag: Flag,
-  }
+  };
 
   type Flag = {
     enabled: boolean
-  }
+  };
 
   const featureFlagValues = {
     firstFlag: {
-      enabled: true
+      enabled: true,
     },
     secondFlag: {
-      enabled: false
+      enabled: false,
     },
   };
 
@@ -47,7 +47,7 @@ describe('app config caching', () => {
           httpStatusCode: 200,
         },
         Configuration: Uint8ArrayBlobAdapter.fromString(JSON.stringify(featureFlagValues)),
-      } as GetLatestConfigurationCommandOutput
+      } as GetLatestConfigurationCommandOutput,
     );
 
     const firstAppConfig = await Clients.get(Client.VTX);
@@ -58,11 +58,11 @@ describe('app config caching', () => {
     const secondAppConfig = await Clients.get(Client.VTX);
     const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
-    expect(firstFlags.firstFlag.enabled).toEqual(true);
-    expect(secondFlags.firstFlag.enabled).toEqual(true);
+    expect(firstFlags.firstFlag.enabled).toBe(true);
+    expect(secondFlags.firstFlag.enabled).toBe(true);
 
-    expect(client.commandCalls(StartConfigurationSessionCommand).length).toEqual(1);
-    expect(client.commandCalls(GetLatestConfigurationCommand).length).toEqual(1);
+    expect(client.commandCalls(StartConfigurationSessionCommand)).toHaveLength(1);
+    expect(client.commandCalls(GetLatestConfigurationCommand)).toHaveLength(1);
   });
 
   it('should fetch feature flags from aws when the cache clears', async () => {
@@ -85,9 +85,9 @@ describe('app config caching', () => {
     const secondAppConfig = await Clients.get(Client.VTX);
     const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
-    expect(firstFlags.firstFlag.enabled).toEqual(true);
-    expect(secondFlags.firstFlag.enabled).toEqual(true);
-    expect(client.commandCalls(StartConfigurationSessionCommand).length).toEqual(2);
-    expect(client.commandCalls(GetLatestConfigurationCommand).length).toEqual(2);
+    expect(firstFlags.firstFlag.enabled).toBe(true);
+    expect(secondFlags.firstFlag.enabled).toBe(true);
+    expect(client.commandCalls(StartConfigurationSessionCommand)).toHaveLength(2);
+    expect(client.commandCalls(GetLatestConfigurationCommand)).toHaveLength(2);
   });
 });

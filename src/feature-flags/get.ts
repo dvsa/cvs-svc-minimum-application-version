@@ -4,10 +4,10 @@ import logger from '../util/logger';
 import { Client, Clients } from './util/app-config';
 import { headers } from '../util/headers';
 
-const parseClientFromEvent = (value: string = ''): Client => {
+const parseClientFromEvent = (value = ''): Client => {
   const clientValue = value.toUpperCase();
   return Client[clientValue as keyof typeof Client];
-}
+};
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   logger.info('feature flag endpoint called');

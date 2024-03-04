@@ -1,19 +1,19 @@
 import { getAppConfig } from '@aws-lambda-powertools/parameters/appconfig';
 
-declare var process : {
+declare let process : {
   env: {
     BRANCH: string
   }
 };
 
-const APP_NAME = 'cvs-app-config'
+const APP_NAME = 'cvs-app-config';
 const CACHE_FOR_MINUTES = 60;
 
 export enum Client {
   VTX = 'vtx',
   VTA = 'vta',
-  VTM = 'vtm'
-};
+  VTM = 'vtm',
+}
 
 // Execute outside the handler to cache at the container level.
 // Cache all clients for n minutes.
@@ -28,13 +28,13 @@ export enum Client {
 export const Clients = new Map(
   Object
     .values(Client)
-    .map(client => ([
-        client,
-        () => getAppConfig(client, {
-            environment: process.env.BRANCH,
-            application: `${APP_NAME}`,
-            maxAge: CACHE_FOR_MINUTES * 60,
-            transform: 'json',
-          })
-      ])
-    ));
+    .map((client) => ([
+      client,
+      () => getAppConfig(client, {
+        environment: process.env.BRANCH,
+        application: `${APP_NAME}`,
+        maxAge: CACHE_FOR_MINUTES * 60,
+        transform: 'json',
+      }),
+    ])),
+);
