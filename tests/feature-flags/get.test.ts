@@ -1,11 +1,11 @@
+const getAppConfig = jest.fn();
+
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { handler } from '../../src/feature-flags/get';
 import { headers } from '../../src/util/headers';
 
-const getAppConfig = jest.fn();
-
 jest.mock('@aws-lambda-powertools/parameters/appconfig', () => ({
-  getAppConfig,
+  getAppConfig: getAppConfig,
 }));
 
 describe('feature flags endpoint', () => {
@@ -35,7 +35,7 @@ describe('feature flags endpoint', () => {
       },
     } as unknown as APIGatewayProxyEvent);
 
-    expect(result).toEqual({ statusCode: 404, body: '\"Client not found: non-existent client\"', headers });
+    expect(result).toEqual({ statusCode: 404, body: '"Client not found"', headers });
     expect(getAppConfig).toHaveBeenCalledTimes(0);
   });
 
@@ -44,7 +44,7 @@ describe('feature flags endpoint', () => {
 
     const result = await handler(validEvent);
 
-    expect(result).toEqual({ statusCode: 500, body: '\"Error fetching feature flags\"', headers });
+    expect(result).toEqual({ statusCode: 500, body: '"Error fetching feature flags"', headers });
     expect(getAppConfig).toHaveBeenCalledTimes(1);
   });
 

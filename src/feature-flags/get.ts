@@ -16,7 +16,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   if (client === undefined) {
     return {
       statusCode: 404,
-      body: JSON.stringify(`Client not found: ${event?.pathParameters?.client}`),
+      body: JSON.stringify(`Client not found`),
       headers,
     };
   }

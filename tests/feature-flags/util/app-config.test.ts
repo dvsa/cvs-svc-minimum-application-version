@@ -50,12 +50,12 @@ describe('app config caching', () => {
       } as GetLatestConfigurationCommandOutput,
     );
 
-    const firstAppConfig = await Clients.get(Client.VTX);
+    const firstAppConfig = Clients.get(Client.VTX);
     const firstFlags = await firstAppConfig!() as CvsFeatureFlags;
 
     // Any second call to the underlying client should return a cache value until it epires.
     // This proves we aren't hitting AWS every time we fetch the app config.
-    const secondAppConfig = await Clients.get(Client.VTX);
+    const secondAppConfig = Clients.get(Client.VTX);
     const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
     expect(firstFlags.firstFlag.enabled).toBe(true);
@@ -75,14 +75,14 @@ describe('app config caching', () => {
       Configuration: Uint8ArrayBlobAdapter.fromString(JSON.stringify(featureFlagValues)),
     } as GetLatestConfigurationCommandOutput);
 
-    const firstAppConfig = await Clients.get(Client.VTX);
+    const firstAppConfig = Clients.get(Client.VTX);
     const firstFlags = await firstAppConfig!() as CvsFeatureFlags;
 
     // Force the internal app config cache to clear.
     // This proves we are hitting AWS once the cache has expired locally.
     clearCaches();
 
-    const secondAppConfig = await Clients.get(Client.VTX);
+    const secondAppConfig = Clients.get(Client.VTX);
     const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
     expect(firstFlags.firstFlag.enabled).toBe(true);
