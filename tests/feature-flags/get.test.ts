@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 const getAppConfig = jest.fn();
 
 import { APIGatewayProxyEvent } from 'aws-lambda';
