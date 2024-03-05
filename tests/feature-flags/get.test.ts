@@ -7,7 +7,7 @@ import { handler } from '../../src/feature-flags/get';
 import { headers } from '../../src/util/headers';
 
 jest.mock('@aws-lambda-powertools/parameters/appconfig', () => ({
-  getAppConfig: getAppConfig,
+  getAppConfig,
 }));
 
 describe('feature flags endpoint', () => {
@@ -36,7 +36,7 @@ describe('feature flags endpoint', () => {
   it('should return 404 when an invalid client is specified', async () => {
     const invalidEvent: Partial<APIGatewayProxyEvent> = {
       pathParameters: {
-        client: 'invalid client'
+        client: 'invalid client',
       },
       body: '',
     };
