@@ -26,7 +26,7 @@ describe('feature flag clients', () => {
     getSpy.mockReset();
   });
 
-  it('should lazy load the clients', async () => {
+  it('should lazy load the clients', () => {
     getSpy.mockReturnValue(Promise.resolve(validFlags));
     Clients.get(FeatureFlagsClientName.VTX);
     expect(getSpy).toHaveBeenCalledTimes(0);
