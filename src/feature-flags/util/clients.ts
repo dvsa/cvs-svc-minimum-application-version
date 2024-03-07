@@ -12,10 +12,8 @@ const featureFlags = new FeatureFlagsClient();
 export const Clients = new Map(
   Object
     .values(FeatureFlagsClientName)
-    .map(client => ([
+    .map((client) => ([
       client,
-      <T>() => {
-        return featureFlags.get<T>(client);
-      },
+      <T>() => featureFlags.get<T>(client),
     ])),
 );

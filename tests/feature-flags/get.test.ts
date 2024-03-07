@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { FeatureFlagsClient, FeatureFlagsClientName } from '@dvsa/cvs-microservice-common';
+import { FeatureFlagsClient, FeatureFlagsClientName } from '@dvsa/cvs-microservice-common/feature-flags';
 
 import { handler } from '../../src/feature-flags/get';
 import { headers } from '../../src/util/headers';
@@ -56,7 +56,7 @@ describe('feature flags endpoint', () => {
     const flags = JSON.parse(result.body) as CvsFeatureFlags;
 
     expect(getSpy).toHaveBeenCalledWith(FeatureFlagsClientName.VTX);
-    expect(result.statusCode).toEqual(200);
+    expect(result.statusCode).toBe(200);
     expect(flags).toEqual(featureFlags);
   });
 });

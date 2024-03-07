@@ -1,4 +1,4 @@
-import { FeatureFlagsClientName, FeatureFlagsClient } from '@dvsa/cvs-microservice-common';
+import { FeatureFlagsClientName, FeatureFlagsClient } from '@dvsa/cvs-microservice-common/feature-flags';
 import { Clients } from '../../../src/feature-flags/util/clients';
 
 describe('feature flag clients', () => {
@@ -50,6 +50,6 @@ describe('feature flag clients', () => {
     const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
     await firstAppConfig!<CvsFeatureFlags>();
 
-    expect(Clients.size).toEqual(3);
+    expect(Clients.size).toBe(3);
   });
 });
