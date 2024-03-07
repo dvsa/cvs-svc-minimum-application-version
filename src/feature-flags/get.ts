@@ -1,12 +1,13 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { FeatureFlagsClientName } from '@dvsa/cvs-microservice-common/feature-flags';
 import 'dotenv/config';
 import logger from '../util/logger';
-import { Client, Clients } from './util/app-config';
+import { Clients } from './util/clients';
 import { headers } from '../util/headers';
 
-const parseClientFromEvent = (value = ''): Client => {
+const parseClientFromEvent = (value = ''): FeatureFlagsClientName => {
   const clientValue = value.toUpperCase();
-  return Client[clientValue as keyof typeof Client];
+  return FeatureFlagsClientName[clientValue as keyof typeof FeatureFlagsClientName];
 };
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -22,8 +23,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   }
 
   try {
-    const appConfig = Clients.get(client);
-    const flags = await appConfig!()!;
+    const config = Clients.get(FeatureFlagsClientName.VTX);
+    const flags = await config!();
 
     return {
       statusCode: 200,
