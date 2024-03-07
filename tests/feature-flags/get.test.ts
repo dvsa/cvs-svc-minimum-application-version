@@ -6,7 +6,7 @@ import { FeatureFlagsClient, FeatureFlagsClientName } from '@dvsa/cvs-microservi
 import { handler } from '../../src/feature-flags/get';
 import { headers } from '../../src/util/headers';
 
-jest.mock('@dvsa/cvs-microservice-common');
+jest.mock('@dvsa/cvs-microservice-common/feature-flags');
 
 describe('feature flags endpoint', () => {
   const validEvent: Partial<APIGatewayProxyEvent> = {
