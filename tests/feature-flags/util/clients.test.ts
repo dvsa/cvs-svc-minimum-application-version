@@ -36,11 +36,11 @@ describe('feature flag clients', () => {
     getSpy.mockReturnValue(Promise.resolve(validFlags));
 
     const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
-    expect(firstAppConfig).not.toBeNull();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const firstFlags = await firstAppConfig!<CvsFeatureFlags>();
 
     const secondAppConfig = Clients.get(FeatureFlagsClientName.VTX);
-    expect(secondAppConfig).not.toBeNull();
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const secondFlags = await secondAppConfig!<CvsFeatureFlags>();
 
     expect(firstFlags).toEqual(validFlags);
@@ -50,6 +50,7 @@ describe('feature flag clients', () => {
 
   it('should contain all the clients', async () => {
     const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     await firstAppConfig!<CvsFeatureFlags>();
 
     expect(Clients.size).toBe(3);

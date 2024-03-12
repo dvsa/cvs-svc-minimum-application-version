@@ -24,9 +24,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
   try {
     const config = Clients.get(client);
-    if (config === null) {
-      throw Error('Client not initialised');
-    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const flags = await config!();
 
     return {
