@@ -23,7 +23,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   }
 
   try {
-    const config = Clients.get(FeatureFlagsClientName.VTX);
+    const config = Clients.get(client);
+    if (config === null) {
+      throw Error('Client not initialised');
+    }
     const flags = await config!();
 
     return {

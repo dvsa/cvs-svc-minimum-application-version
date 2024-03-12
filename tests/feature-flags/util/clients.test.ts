@@ -36,9 +36,11 @@ describe('feature flag clients', () => {
     getSpy.mockReturnValue(Promise.resolve(validFlags));
 
     const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
+    expect(firstAppConfig).not.toBeNull();
     const firstFlags = await firstAppConfig!<CvsFeatureFlags>();
 
     const secondAppConfig = Clients.get(FeatureFlagsClientName.VTX);
+    expect(secondAppConfig).not.toBeNull();
     const secondFlags = await secondAppConfig!<CvsFeatureFlags>();
 
     expect(firstFlags).toEqual(validFlags);
