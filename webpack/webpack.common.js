@@ -27,9 +27,9 @@ module.exports = {
   // the size of your deployment package. If you want to always include it then comment out this line. It has
   // been included conditionally because the node10.x docker image used by SAM local doesn't include it.
   // externals: process.env.NODE_ENV === 'development' ? [] : ['aws-sdk'],
-  externals: [
-    /aws-sdk/,
-  ],
+  externals: {
+    fsevents: 'require(\'fsevents\')',
+  },
 
   // Add the TypeScript loader
   module: {

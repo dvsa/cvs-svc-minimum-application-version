@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "target": "es2019",
-    "module": "Node16",
+    "module": "commonjs",
     "allowJs": true,
     "checkJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "strict": true,
-    "moduleResolution": "Node16"
+    "strict": true
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"]
 }
