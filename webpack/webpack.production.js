@@ -4,7 +4,7 @@ const common = require('./webpack.common.js');
 const archiver = require('archiver');
 const branchName = require('current-git-branch');
 
-const LAMBDA_NAMES = ['FeatureFlagsLambdaFunction', 'MinAppVersionLambdaFunction'];
+const LAMBDA_NAME = 'GetLambdaFunction';
 const OUTPUT_FOLDER = './'
 const REPO_NAME = 'cvs-svc-minimum-application-version';
 const BRANCH_NAME = branchName().replace(/\//g, "-");
@@ -62,13 +62,13 @@ module.exports = env => {
     mode: 'production',
     plugins: [
       new BundlePlugin({
-        archives: LAMBDA_NAMES.map(ln => {
-          return {
-            inputPath: `.aws-sam/build/${ln}`,
+        archives: [
+          {
+            inputPath: `.aws-sam/build/${LAMBDA_NAME}`,
             outputPath: `${OUTPUT_FOLDER}`,
-            outputName: `${COMMIT_HASH}-${ln}`
+            outputName: `${COMMIT_HASH}`,
           }
-        })
+        ],
       }),
     ],
   });

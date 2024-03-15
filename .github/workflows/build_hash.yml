@@ -10,8 +10,6 @@ on:
 jobs:
   Build:
     uses: dvsa/cvs-github-actions/.github/workflows/build-node-hash.yaml@develop
-    with:
-      mono_repo: true
     secrets:
       CVS_MGMT_AWS_ROLE: ${{ secrets.CVS_MGMT_AWS_ROLE }}
       DVSA_AWS_REGION: ${{ secrets.DVSA_AWS_REGION }}
