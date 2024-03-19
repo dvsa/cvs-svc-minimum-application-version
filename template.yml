@@ -2,10 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
-    GetLambdaFunction:
+    MinAppVersionLambdaFunction:
       Type: 'AWS::Serverless::Function'
       Properties:
-        CodeUri: src/handler/
+        CodeUri: src/minimum-application-version/
         Handler: get.handler
         Runtime: nodejs18.x
         Events:
@@ -15,10 +15,23 @@ Resources:
               Path: /minimum-version
               Method: get
 
+    FeatureFlagsLambdaFunction:
+      Type: 'AWS::Serverless::Function'
+      Properties:
+        CodeUri: src/feature-flags/
+        Handler: get.handler
+        Runtime: nodejs18.x
+        Events:
+          GetLambdaApi:
+            Type: Api
+            Properties:
+              Path: /feature-flags/{client}
+              Method: get
+
 Outputs:
   GetLambdaApi:
     Description: "API Gateway endpoint URL for GetLambdaFunction on dev stage"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Dev/"
-  GetLambdaFunction:
+  MinAppVersionLambdaFunction:
     Description: "Get Lambda Function ARN"
     Value: !GetAtt GetLambdaFunction.Arn

@@ -2,12 +2,7 @@ import { GetParameterCommand, SSMClient } from '@aws-sdk/client-ssm';
 import type { APIGatewayProxyResult } from 'aws-lambda';
 import 'dotenv/config';
 import logger from '../util/logger';
-
-export const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-  'Access-Control-Allow-Methods': 'GET,OPTIONS',
-};
+import { headers } from '../util/headers';
 
 export const handler = async (): Promise<APIGatewayProxyResult> => {
   try {
