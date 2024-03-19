@@ -1,5 +1,16 @@
-import { FeatureFlagsClientName, FeatureFlagsClient } from '@dvsa/cvs-microservice-common/feature-flags';
+/* eslint-disable import/first */
+const mockGetVTXProfile = jest.fn();
+const mockGetVTAProfile = jest.fn();
+const mockGetVTMProfile = jest.fn();
+
+import { FeatureFlagsClientName } from '@dvsa/cvs-microservice-common/feature-flags';
 import { Clients } from '../../../src/feature-flags/util/clients';
+
+jest.mock('@dvsa/cvs-microservice-common/feature-flags/profiles', () => ({
+  getVTXProfile: mockGetVTXProfile,
+  getVTAProfile: mockGetVTAProfile,
+  getVTMProfile: mockGetVTMProfile,
+}));
 
 describe('feature flag clients', () => {
   type CvsFeatureFlags = {
@@ -20,39 +31,45 @@ describe('feature flag clients', () => {
     },
   };
 
-  const getSpy = jest.spyOn(FeatureFlagsClient.prototype, 'get');
 
   beforeEach(() => {
-    getSpy.mockReset();
+    mockGetVTXProfile.mockReset();
+    mockGetVTAProfile.mockReset();
+    mockGetVTMProfile.mockReset();
   });
 
-  it('should lazy load the clients', () => {
-    getSpy.mockReturnValue(Promise.resolve(validFlags));
-    Clients.get(FeatureFlagsClientName.VTX);
-    expect(getSpy).toHaveBeenCalledTimes(0);
+  test.each`
+  clientName | mock
+  ${FeatureFlagsClientName.VTX} | ${mockGetVTXProfile}
+  ${FeatureFlagsClientName.VTA} | ${mockGetVTAProfile}
+  ${FeatureFlagsClientName.VTM} | ${mockGetVTMProfile}
+  `('should not fetch feature flags when just loading', ({ clientName, mock }) => {
+    mock.mockReturnValue(Promise.resolve(validFlags));
+
+    const profile = Clients.get(clientName);
+
+    expect(profile).not.toBeNull();
+    expect(mock).toHaveBeenCalledTimes(0);
   });
 
-  it('should call get multiple times', async () => {
-    getSpy.mockReturnValue(Promise.resolve(validFlags));
+  test.each`
+  clientName | mock
+  ${FeatureFlagsClientName.VTX} | ${mockGetVTXProfile}
+  ${FeatureFlagsClientName.VTA} | ${mockGetVTAProfile}
+  ${FeatureFlagsClientName.VTM} | ${mockGetVTMProfile}
+  `('should fetch feature flags each time theyre invoked', async ({ clientName, mock }) => {
+    mock.mockReturnValue(Promise.resolve(validFlags));
 
-    const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
+    const firstAppConfig = Clients.get(clientName);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const firstFlags = await firstAppConfig!<CvsFeatureFlags>();
+    const firstFlags = await firstAppConfig!() as CvsFeatureFlags;
 
-    const secondAppConfig = Clients.get(FeatureFlagsClientName.VTX);
+    const secondAppConfig = Clients.get(clientName);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const secondFlags = await secondAppConfig!<CvsFeatureFlags>();
+    const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
     expect(firstFlags).toEqual(validFlags);
     expect(secondFlags).toEqual(validFlags);
-    expect(getSpy).toHaveBeenCalledTimes(2);
-  });
-
-  it('should contain all the clients', async () => {
-    const firstAppConfig = Clients.get(FeatureFlagsClientName.VTX);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    await firstAppConfig!<CvsFeatureFlags>();
-
-    expect(Clients.size).toBe(3);
+    expect(mock).toHaveBeenCalledTimes(2);
   });
 });
