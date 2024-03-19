@@ -31,7 +31,6 @@ describe('feature flag clients', () => {
     },
   };
 
-
   beforeEach(() => {
     mockGetVTXProfile.mockReset();
     mockGetVTAProfile.mockReset();
@@ -43,33 +42,39 @@ describe('feature flag clients', () => {
   ${FeatureFlagsClientName.VTX} | ${mockGetVTXProfile}
   ${FeatureFlagsClientName.VTA} | ${mockGetVTAProfile}
   ${FeatureFlagsClientName.VTM} | ${mockGetVTMProfile}
-  `('should not fetch feature flags when just loading', ({ clientName, mock }) => {
-    mock.mockReturnValue(Promise.resolve(validFlags));
+  `(
+    'should not fetch feature flags when just loading',
+    ({ clientName, mock }: { clientName: FeatureFlagsClientName, mock: jest.Mock }) => {
+      mock.mockReturnValue(Promise.resolve(validFlags));
 
-    const profile = Clients.get(clientName);
+      const profile = Clients.get(clientName);
 
-    expect(profile).not.toBeNull();
-    expect(mock).toHaveBeenCalledTimes(0);
-  });
+      expect(profile).not.toBeNull();
+      expect(mock).toHaveBeenCalledTimes(0);
+    },
+  );
 
   test.each`
   clientName | mock
   ${FeatureFlagsClientName.VTX} | ${mockGetVTXProfile}
   ${FeatureFlagsClientName.VTA} | ${mockGetVTAProfile}
   ${FeatureFlagsClientName.VTM} | ${mockGetVTMProfile}
-  `('should fetch feature flags each time theyre invoked', async ({ clientName, mock }) => {
-    mock.mockReturnValue(Promise.resolve(validFlags));
+  `(
+    'should fetch feature flags each time theyre invoked',
+    async ({ clientName, mock }: { clientName: FeatureFlagsClientName, mock: jest.Mock }) => {
+      mock.mockReturnValue(Promise.resolve(validFlags));
 
-    const firstAppConfig = Clients.get(clientName);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const firstFlags = await firstAppConfig!() as CvsFeatureFlags;
+      const firstAppConfig = Clients.get(clientName);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const firstFlags = await firstAppConfig!() as CvsFeatureFlags;
 
-    const secondAppConfig = Clients.get(clientName);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
+      const secondAppConfig = Clients.get(clientName);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const secondFlags = await secondAppConfig!() as CvsFeatureFlags;
 
-    expect(firstFlags).toEqual(validFlags);
-    expect(secondFlags).toEqual(validFlags);
-    expect(mock).toHaveBeenCalledTimes(2);
-  });
+      expect(firstFlags).toEqual(validFlags);
+      expect(secondFlags).toEqual(validFlags);
+      expect(mock).toHaveBeenCalledTimes(2);
+    },
+  );
 });
